@@ -27,7 +27,7 @@ public class TrainDeparture {
    * @param destination End-destination of train.
    * @param track Number of the departure-track.
    */
-  public trainDeparture(LocalDateTime departureTime, String line, int trainNumber, String destination, int track) {
+  public TrainDeparture(LocalDateTime departureTime, String line, int trainNumber, String destination, int track) {
     setDepartureTime(departureTime);
     setLine(line);
     setTrainNumber(trainNumber);
@@ -39,7 +39,7 @@ public class TrainDeparture {
   /**
    * Constructs the class trainDeparture with undeclared fields.
    */
-  public trainDeparture() {
+  public TrainDeparture() {
     setDepartureTime(LocalDateTime.now());
     setLine("");
     setDestination("");
