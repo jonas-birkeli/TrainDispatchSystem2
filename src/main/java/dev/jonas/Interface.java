@@ -1,2 +1,4 @@
-package dev.jonas;public class Interface {
+package dev.jonas;
+
+public class Interface {
 }
