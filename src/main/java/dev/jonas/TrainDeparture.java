@@ -7,10 +7,10 @@ import java.time.Duration;
  * Class for train-departures. Has the fields departure-time, delay of departure, line, destination, train-number and track-number
  *
  * @author Jonas Birkeli
- * @version 1.0.0
+ * @version 1.0.1
  * @since 1.0.0
  */
-public class trainDeparture {
+public class TrainDeparture {
   LocalDateTime departureTime;
   Duration delay;
   String line;
