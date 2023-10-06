@@ -1,10 +1,12 @@
 package dev.jonas;
 
-import java.time.LocalDateTime;
 import java.time.Duration;
+import java.time.LocalDateTime;
 
 /**
- * Class for train-departures. Has the fields departure-time, delay of departure, line, destination, train-number and track-number
+ * Class for train-departures.
+ * Has the fields departure-time,
+ * delay of departure, line, destination, train-number and track-number
  *
  * @author Jonas Birkeli
  * @version 1.0.1
@@ -19,7 +21,8 @@ public class TrainDeparture {
   int track;
 
   /**
-   * Constructor of the TrainDeparture. Needs parameter departure-time, line, trainnumber, destination and departure-track.
+   * Constructor of the TrainDeparture.
+   * Needs parameter departure-time, line, trainnumber, destination and departure-track.
    *
    * @param departureTime  Scheduled time for departure of train.
    * @param line Scheduled line of train
@@ -27,7 +30,13 @@ public class TrainDeparture {
    * @param destination End-destination of train.
    * @param track Number of the departure-track.
    */
-  public TrainDeparture(LocalDateTime departureTime, String line, int trainNumber, String destination, int track) {
+  public TrainDeparture(
+      LocalDateTime departureTime,
+      String line,
+      int trainNumber,
+      String destination,
+      int track
+  ) {
     setDepartureTime(departureTime);
     setLine(line);
     setTrainNumber(trainNumber);
@@ -68,7 +77,8 @@ public class TrainDeparture {
   }
 
   /**
-   * Gets the departure-delay of the train departure. Needs to be added to the scheduled departure-time. Cannot be negative.
+   * Gets the departure-delay of the train departure.
+   * Needs to be added to the scheduled departure-time. Cannot be negative.
    *
    * @return Delay of train departure.
    */
@@ -77,7 +87,8 @@ public class TrainDeparture {
   }
 
   /**
-   * Sets the departure-delay of the train departure. Must not be a negative duration.
+   * Sets the departure-delay of the train departure.
+   * Must not be a negative duration.
    *
    * @param delay Delay of train. Duration.ZERO if no delay
    */
@@ -104,7 +115,9 @@ public class TrainDeparture {
   }
 
   /**
-   * Gets the train-number. Value is non-zero, but might be -1 if not declared. Number is unique to this train.
+   * Gets the train-number.
+   * Value is non-zero, but might be -1 if not declared.
+   * Number is unique to this train.
    *
    * @return Is greater than 0 or -1
    */
@@ -113,7 +126,9 @@ public class TrainDeparture {
   }
 
   /**
-   * Sets the train-number. Set as -1 if you cannot declare this yet. Number must be unique to this train.
+   * Sets the train-number.
+   * Set as -1 if you cannot declare this yet.
+   * Number must be unique to this train.
    *
    * @param trainNumber Number must be greater than 0 or -1 if not declared yet.
    */
@@ -140,7 +155,8 @@ public class TrainDeparture {
   }
 
   /**
-   * Gets the track where the train departs from. Non-zero int for declared track. -1 means undeclared.
+   * Gets the track where the train departs from.
+   * Non-zero int for declared track. -1 means undeclared.
    *
    * @return Value is non-zero or -1 if undeclared.
    */
