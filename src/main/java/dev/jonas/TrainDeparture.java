@@ -1,24 +1,32 @@
 package dev.jonas;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-
 /**
- * Class for train-departures.
- * Has the fields departure-time,
- * delay of departure, line, destination, train-number and track-number
+ * Class for train-departures. Leave no constructor for randomly assigned train-number.
+ * Methods in class:
+ * {@link #getDepartureTime()}<br>
+ * {@link #setDepartureTime(int[])}<br>
+ * {@link #getDestination()}<br>
+ * {@link #setDestination(String)}<br>
+ * {@link #getLine()}<br>
+ * {@link #setLine(String)}<br>
+ * {@link #getDelay()}<br>
+ * {@link #setDelay(int[])}<br>
+ * {@link #getTrack()}<br>
+ * {@link #setTrack(int)}<br>
+ * {@link #getTrainNumber()}<br>
+ * {@link #setTrainNumber(int)}<br>
  *
  * @author Jonas Birkeli
  * @version 1.0.1
  * @since 1.0.0
  */
 public class TrainDeparture {
-  LocalDateTime departureTime;
-  Duration delay;
-  String line;
-  String destination;
-  int trainNumber;
-  int track;
+  private int[] departureTime;
+  private int[] delay;
+  private String line;
+  private String destination;
+  private int trainNumber;
+  private int track;
 
   /**
    * Constructor of the TrainDeparture.
@@ -31,7 +39,7 @@ public class TrainDeparture {
    * @param track Number of the departure-track.
    */
   public TrainDeparture(
-      LocalDateTime departureTime,
+      int[] departureTime,
       String line,
       int trainNumber,
       String destination,
@@ -42,37 +50,65 @@ public class TrainDeparture {
     setTrainNumber(trainNumber);
     setDestination(destination);
     setTrack(track);
-    setDelay(Duration.ZERO);
+    setDelay(new int[]{0, 0});
   }
 
   /**
-   * Constructs the class trainDeparture with undeclared fields.
+   * Constructor of the TrainDeparture with set fields to default values.
    */
   public TrainDeparture() {
-    setDepartureTime(LocalDateTime.now());
+    setDepartureTime(new int[]{0, 0});
     setLine("");
     setDestination("");
     setTrainNumber(-1);
     setTrack(-1);
-    setDelay(Duration.ZERO);
+    setDelay(new int[]{0, 0});
+  }
+
+  /**
+   * Constructor of the TrainDeparture with a list of fields in the format:
+   * "{
+   * departureHour,
+   * departureMinute,
+   * departureLinedeparture,
+   * Destination,
+   * departureTrack,
+   * number
+   * }".
+   *
+   * @param fields List of fields in the format:
+   *               "{
+   *               departureHour,
+   *               departureMinute,
+   *               departureLine,
+   *               departureDestination,
+   *               departureTrack,
+   *               number
+   *               }".
+   */
+  public TrainDeparture(String[] fields) {
+    setDepartureTime(new int[]{Integer.parseInt(fields[0]), Integer.parseInt(fields[1])});
+    setLine(fields[2]);
+    setDestination(fields[3]);
+    setTrack(Integer.parseInt(fields[4]));
+    setTrainNumber(Integer.parseInt(fields[5]));
   }
 
   /**
    * Gets the scheduled departure-time of the train departure.
    *
-   * @return Scheduled time for departure of train.
+   * @return Formatted departure-time as am integer array of "{HH, mm}". Cannot be null.
    */
-  public LocalDateTime getDepartureTime() {
+  public int[] getDepartureTime() {
     return departureTime;
   }
 
   /**
-   * Sets a time of departure of the train. Given as a timestamp using LocalDateTime.
+   * Sets a time of departure of the train given by an integer array.
    *
-   * @see LocalDateTime
-   * @param departureTime Scheduled time for departure of train.
+   * @param departureTime Needs to be in the format "{HH, mm}". Cannot be null.
    */
-  public void setDepartureTime(LocalDateTime departureTime) {
+  public void setDepartureTime(int[] departureTime) {
     this.departureTime = departureTime;
   }
 
@@ -82,7 +118,7 @@ public class TrainDeparture {
    *
    * @return Delay of train departure.
    */
-  public Duration getDelay() {
+  public int[] getDelay() {
     return delay;
   }
 
@@ -92,7 +128,7 @@ public class TrainDeparture {
    *
    * @param delay Delay of train. Duration.ZERO if no delay
    */
-  public void setDelay(Duration delay) {
+  public void setDelay(int[] delay) {
     this.delay = delay;
   }
 
