@@ -2,6 +2,7 @@ package dev.jonas;
 
 public class Main {
   public static void main(String[] args) {
-    System.out.println("Hello world!");
+    Io io = new Io();
+   io.start();
   }
 }

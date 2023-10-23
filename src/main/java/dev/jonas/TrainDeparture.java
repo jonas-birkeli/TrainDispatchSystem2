@@ -1,23 +1,21 @@
 package dev.jonas;
 
+
+import java.util.Objects;
+
 /**
- * Class for train-departures. Leave no constructor for randomly assigned train-number.
- * Methods in class:
- * {@link #getDepartureTime()}<br>
- * {@link #setDepartureTime(int[])}<br>
- * {@link #getDestination()}<br>
- * {@link #setDestination(String)}<br>
- * {@link #getLine()}<br>
- * {@link #setLine(String)}<br>
- * {@link #getDelay()}<br>
- * {@link #setDelay(int[])}<br>
- * {@link #getTrack()}<br>
- * {@link #setTrack(int)}<br>
- * {@link #getTrainNumber()}<br>
- * {@link #setTrainNumber(int)}<br>
+ * The {@code TrainDeparture} class represents a train on a station.
+ * All {@code TrainDeparture}s has a departuretime, delay, line, destination and track.
+ *
+ * <p>The {@code TrainDeparture} class has three constructors:
+ * <blockquote><pre>
+ *   TrainDeparture trainDeparture = new TrainDeparture();
+ *   TrainDeparture trainDeparture = new TrainDeparture({23, 56}, "L1", "Hamburg", 3);
+ *   TrainDeparture trainDeparture = new TrainDeparture({23, 56, "L1", "Hamburg", 3});
+ * </pre></blockquote>
  *
  * @author Jonas Birkeli
- * @version 1.0.1
+ * @version 1.1.0
  * @since 1.0.0
  */
 public class TrainDeparture {
@@ -25,73 +23,66 @@ public class TrainDeparture {
   private int[] delay;
   private String line;
   private String destination;
-  private int trainNumber;
   private int track;
 
   /**
-   * Constructor of the TrainDeparture.
-   * Needs parameter departure-time, line, trainnumber, destination and departure-track.
+   * Constructs a new {@code TrainDeparture} with the given parameters.
    *
    * @param departureTime  Scheduled time for departure of train.
    * @param line Scheduled line of train
-   * @param trainNumber Number on train.
    * @param destination End-destination of train.
    * @param track Number of the departure-track.
    */
   public TrainDeparture(
       int[] departureTime,
       String line,
-      int trainNumber,
       String destination,
       int track
   ) {
     setDepartureTime(departureTime);
     setLine(line);
-    setTrainNumber(trainNumber);
     setDestination(destination);
     setTrack(track);
     setDelay(new int[]{0, 0});
   }
 
   /**
-   * Constructor of the TrainDeparture with set fields to default values.
+   * Constructs a new {@code TrainDeparture} with default fields.
+   *
+   * @since 1.0.1
    */
   public TrainDeparture() {
     setDepartureTime(new int[]{0, 0});
     setLine("");
     setDestination("");
-    setTrainNumber(-1);
     setTrack(-1);
     setDelay(new int[]{0, 0});
   }
 
   /**
-   * Constructor of the TrainDeparture with a list of fields in the format:
-   * "{
+   * Constructor of the TrainDeparture with a list of fields in the format:<br>
+   * "{<br>
    * departureHour,
-   * departureMinute,
-   * departureLinedeparture,
-   * Destination,
-   * departureTrack,
-   * number
+   * departureMinute,<br>
+   * departureLinedeparture,<br>
+   * Destination,<br>
+   * departureTrack<br>
    * }".
    *
-   * @param fields List of fields in the format:
-   *               "{
-   *               departureHour,
-   *               departureMinute,
-   *               departureLine,
-   *               departureDestination,
-   *               departureTrack,
-   *               number
-   *               }".
+   * @param fields List of fields in the format "{HH, mm, line, destination, track}".
+   *               Cannot be null.
+   *
+   * @since 1.1.0
    */
   public TrainDeparture(String[] fields) {
+    if (fields == null) {
+      return;
+    }
     setDepartureTime(new int[]{Integer.parseInt(fields[0]), Integer.parseInt(fields[1])});
     setLine(fields[2]);
-    setDestination(fields[3]);
-    setTrack(Integer.parseInt(fields[4]));
-    setTrainNumber(Integer.parseInt(fields[5]));
+    setTrack(Integer.parseInt(fields[3]));
+    setDestination(fields[4]);
+    setDelay(new int[]{0, 0});
   }
 
   /**
@@ -123,13 +114,17 @@ public class TrainDeparture {
   }
 
   /**
-   * Sets the departure-delay of the train departure.
-   * Must not be a negative duration.
+   * Sets the {@code delay} of the train departure.
+   * Must not be over 24 hours or negative.
    *
-   * @param delay Delay of train. Duration.ZERO if no delay
+   * @param delay Delay in the format "{HH, mm}". Cannot be null.
    */
   public void setDelay(int[] delay) {
-    this.delay = delay;
+    if (delay[0] < 24 && delay[1] < 60 && delay[0] >= 0 && delay[1] >= 0) {
+      this.delay = delay;
+    } else {
+      this.delay = new int[]{0, 0};
+    }
   }
 
   /**
@@ -142,34 +137,13 @@ public class TrainDeparture {
   }
 
   /**
-   * Sets the line of the train. Empty if not decalred.
+   * Sets the {@code Line} of the train. If empty or null, line is set to empty.
+   * For example: "L1".
    *
    * @param line Scheduled line of train
    */
   public void setLine(String line) {
-    this.line = line;
-  }
-
-  /**
-   * Gets the train-number.
-   * Value is non-zero, but might be -1 if not declared.
-   * Number is unique to this train.
-   *
-   * @return Is greater than 0 or -1
-   */
-  public int getTrainNumber() {
-    return trainNumber;
-  }
-
-  /**
-   * Sets the train-number.
-   * Set as -1 if you cannot declare this yet.
-   * Number must be unique to this train.
-   *
-   * @param trainNumber Number must be greater than 0 or -1 if not declared yet.
-   */
-  public void setTrainNumber(int trainNumber) {
-    this.trainNumber = trainNumber;
+    this.line = Objects.requireNonNullElse(line, "");
   }
 
   /**
@@ -181,31 +155,59 @@ public class TrainDeparture {
     return destination;
   }
 
-  /**
-   * Sets the train destination. Empty means not declared.
+  /*** Sets the {@code Destination}. If empty or null, destination is set to empty.
    *
-   * @param destination End-destination of train given in the format: "Start - End"
+   * @param destination End-destination of train-departure. Example: "Lillehammer"
+   *
+   * @since 1.0.0
    */
   public void setDestination(String destination) {
-    this.destination = destination;
+    this.destination = Objects.requireNonNullElse(destination, "");
   }
 
   /**
-   * Gets the track where the train departs from.
-   * Non-zero int for declared track. -1 means undeclared.
+   * Gets the {@code track} where the train departs from.
+   * Non-zero int for declared track.
+   * Value is -1 if undeclared.
    *
-   * @return Value is non-zero or -1 if undeclared.
+   * @return Value is positive non-zero or -1 if undeclared.
+   *
+   * @since 1.0.0
    */
   public int getTrack() {
     return track;
   }
 
   /**
-   * Sets the departure-track of the train. Non-zero int for declared track, -1 for undeclared.
+   * Sets the {@code track} where the train departs from.
+   * {@code Track} must be between 1 and 99.
+   * Value set to -1 if conditions are not met.
    *
-   * @param track Departure-track value.
+   * @param track Track of departure. Example: 3
+   * @since 1.0.0
    */
   public void setTrack(int track) {
-    this.track = track;
+    if (track <= 0 || track > 99) {
+      this.track = -1;
+    } else {
+      this.track = track;
+    }
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder objectInformation;
+    objectInformation = new StringBuilder();
+    objectInformation
+        .append(getLine())
+        .append(" ")
+        .append(getTrack())
+        .append(" ")
+        .append(getDepartureTime()[0])
+        .append(":")
+        .append(getDepartureTime()[1])
+        .append(" ")
+        .append(getDestination());
+    return objectInformation.toString();
   }
 }
